@@ -48,7 +48,8 @@ int main()
 	{
 		wert = anaEin(0);											// Einlesen eines analogen Eingabesignals über Kanal 0
 		cout << wert << endl;
-		Sleep(1000);										// Einlesen eines digitalen Eingabesignals über Kanal 0
+		Sleep(1000);
+		ende = digEin(0);											// Einlesen eines digitalen Eingabesignals über Kanal 0
 		
 	}
 	time_t time_end = time(0);
