@@ -79,13 +79,13 @@ int main()
 		cout << "Anzahl der Messwerte größer oberer Grenzwert: " << anzahl_groesser << endl;
 		cout << "Anzahl der Messwerte kleiner unterer Grenzwert: " << anzahl_kleiner << endl;
 
-		double prozent_sollbereich = anzahl_sollbereich / (double)anzahl;
-		double prozent_groesser = anzahl_groesser / (double)anzahl;
-		double prozent_kleiner = anzahl_kleiner / (double)anzahl;
+		double prozent_sollbereich = anzahl_sollbereich / (double)anzahl * 100;
+		double prozent_groesser = anzahl_groesser / (double)anzahl * 100;
+		double prozent_kleiner = anzahl_kleiner / (double)anzahl * 100;
 
-		cout << "Prozentualer Anteil im Sollbereich: " << " " << endl;
-		cout << "Prozentualer größer oberer Grenzwert: " << " " << endl;
-		cout << "Prozentualer kleiner unterer Grenzwert: " << " " << endl;
+		cout << "Prozentualer Anteil im Sollbereich: " << (int) prozent_sollbereich << "%" << endl;
+		cout << "Prozentualer größer oberer Grenzwert: " << (int) prozent_groesser << "%" << endl;
+		cout << "Prozentualer kleiner unterer Grenzwert: " << (int) prozent_kleiner << "%" << endl;
 
 		cout << "Enter drücken um eine neue Messung zu starten:";
 		int temp;
