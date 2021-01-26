@@ -25,8 +25,14 @@ using namespace std;
 
 int main()
 {
-	bool	ende = false;
-	double	wert, threshold_top, threshold_bottom;
+	double	limit_oben = 0;
+	double  limit_unten = 0;
+	int		anzahl = 0;
+	double	summe = 0;
+	int		anzahl_sollbereich = 0;
+	int		anzahl_groesser = 0;
+	int		anzahl_kleiner = 0;
+
 
 	locale::global(locale("German_germany"));						// Zeichensatz deutsch
 
@@ -34,10 +40,10 @@ int main()
 	cout << "----------------------------------------" << endl << endl;
 
 	cout << "Oberer Grenzwert: ";
-	cin >> threshold_top;
+	cin >> limit_oben;
 
 	cout << "Unterer Grenzwert: ";
-	cin >> threshold_bottom;
+	cin >> limit_unten;
 
 	while (digEin(0) != 1) {
 		Sleep(10);
@@ -46,9 +52,9 @@ int main()
 
 	while (digEin(0))
 	{
-		wert = anaEin(0);											// Einlesen eines analogen Eingabesignals über Kanal 0
+		double wert = anaEin(0);
 		cout << wert << endl;
-		Sleep(1000);										// Einlesen eines digitalen Eingabesignals über Kanal 0
+		Sleep(1000);
 		
 	}
 	time_t time_end = time(0);
@@ -57,7 +63,16 @@ int main()
 	cout << "Anfang: " << ctime(&time_start);
 	cout << "Ende: " << ctime(&time_end);
 
-	cout << "Beispielprogramm beendet" << endl << endl;
+	cout << "Anzahl der Messwerte im Sollbereich: " << anzahl << endl;
+	cout << "Anzahl der Messwerte größer oberer Grenzwert: " << anzahl_groesser << endl;
+	cout << "Anzahl der Messwerte kleiner unterer Grenzwert: " << anzahl_kleiner << endl;
+
+	cout << "Prozentualer Anteil im Sollbereich: " << " " << endl;
+	cout << "Prozentualer größer oberer Grenzwert: " << " " << endl;
+	cout << "Prozentualer kleiner unterer Grenzwert: " << " " << endl;
+
+
+
 	system("Pause");
 	return 0;
 }
