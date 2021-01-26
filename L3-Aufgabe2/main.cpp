@@ -36,42 +36,62 @@ int main()
 
 	locale::global(locale("German_germany"));						// Zeichensatz deutsch
 
-	cout << "Messwertauswertung mit SimSTB" << endl;
-	cout << "----------------------------------------" << endl << endl;
+	while (true) {
 
-	cout << "Oberer Grenzwert: ";
-	cin >> limit_oben;
+		cout << "Messwertauswertung mit SimSTB" << endl;
+		cout << "----------------------------------------" << endl << endl;
 
-	cout << "Unterer Grenzwert: ";
-	cin >> limit_unten;
+		cout << "Oberer Grenzwert: ";
+		cin >> limit_oben;
 
-	while (digEin(0) != 1) {
-		Sleep(10);
+		cout << "Unterer Grenzwert: ";
+		cin >> limit_unten;
+
+		while (digEin(0) != 1) {
+			Sleep(10);
+		}
+		time_t time_start = time(0);
+
+		while (digEin(0))
+		{
+			double wert = anaEin(0);
+			cout << wert << endl;
+			
+			anzahl++;
+			summe += wert;
+			
+			Sleep(1000);
+
+		}
+		time_t time_end = time(0);
+
+
+		cout << "Anfang: " << ctime(&time_start);
+		cout << "Ende: " << ctime(&time_end);
+
+		cout << "Anzahl der Messwerte: " << anzahl << endl;
+
+		double mittelwert = summe / (double) anzahl;
+		cout << "Mittelwert der Messwerte: " << mittelwert << endl;
+
+		anzahl_sollbereich = anzahl - anzahl_groesser - anzahl_kleiner;
+		cout << "Anzahl der Messwerte im Sollbereich: " << anzahl_sollbereich << endl;
+		cout << "Anzahl der Messwerte größer oberer Grenzwert: " << anzahl_groesser << endl;
+		cout << "Anzahl der Messwerte kleiner unterer Grenzwert: " << anzahl_kleiner << endl;
+
+		double prozent_sollbereich = anzahl_sollbereich / (double)anzahl;
+		double prozent_groesser = anzahl_groesser / (double)anzahl;
+		double prozent_kleiner = anzahl_kleiner / (double)anzahl;
+
+		cout << "Prozentualer Anteil im Sollbereich: " << " " << endl;
+		cout << "Prozentualer größer oberer Grenzwert: " << " " << endl;
+		cout << "Prozentualer kleiner unterer Grenzwert: " << " " << endl;
+
+		cout << "Enter drücken um eine neue Messung zu starten:";
+		int temp;
+		cin >> temp;
+
 	}
-	time_t time_start = time(0);
-
-	while (digEin(0))
-	{
-		double wert = anaEin(0);
-		cout << wert << endl;
-		Sleep(1000);
-		
-	}
-	time_t time_end = time(0);
-
-
-	cout << "Anfang: " << ctime(&time_start);
-	cout << "Ende: " << ctime(&time_end);
-
-	cout << "Anzahl der Messwerte im Sollbereich: " << anzahl << endl;
-	cout << "Anzahl der Messwerte größer oberer Grenzwert: " << anzahl_groesser << endl;
-	cout << "Anzahl der Messwerte kleiner unterer Grenzwert: " << anzahl_kleiner << endl;
-
-	cout << "Prozentualer Anteil im Sollbereich: " << " " << endl;
-	cout << "Prozentualer größer oberer Grenzwert: " << " " << endl;
-	cout << "Prozentualer kleiner unterer Grenzwert: " << " " << endl;
-
-
 
 	system("Pause");
 	return 0;
