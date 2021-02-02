@@ -12,11 +12,12 @@
 //		Erstellt:			26.01.2021
 //		Letzte Änderung:	02.02.2019
 //
-#define _CRT_SECURE_NO_WARNINGS																		// Sicherheitswarnung ignorieren
 
 #include <cstdlib>
 #include <iostream>
+#include <iomanip>
 #include <locale>
+#include <conio.h>
 #include <Windows.h>
 #include <ctime>    
 #include "simulation.h"
@@ -32,33 +33,41 @@ int main()
 	int		anzahl_sollbereich = 0;
 	int		anzahl_groesser = 0;
 	int		anzahl_kleiner = 0;
-
+	char	Start_Zeit_String[30];
+	char	End_Zeit_String[30];
+	time_t	startzeit, endzeit;
 
 	locale::global(locale("German_germany"));														// Zeichensatz deutsch
 
 	while (true) {
 
+		cout << endl;
 		cout << "Messwertauswertung mit SimSTB" << endl;
 		cout << "----------------------------------------" << endl << endl;
 
+		Sleep(10);
 		cout << "Oberer Grenzwert: ";
 		cin >> limit_oben;
 
 		cout << "Unterer Grenzwert: ";
 		cin >> limit_unten;
 
-		while (digEin(0) != 1) {																	//Bedingung für den Start
+		cout << endl;
+
+		cout << "Warten bis DE0 = 1";
+		while (digEin(0) != 1) {																	// Bedingung für den Start
 			Sleep(10);
 		}
-		time_t time_start = time(0);																//Start der Messung
-
+		cout << " [OK]" << endl << endl;
+		time(&startzeit);																			// Start der Messung
+		
 		while (digEin(0))
 		{
-			double wert = anaEin(0);																//die Werte werden eingelesen
-			cout << wert << endl;
+			double wert = anaEin(0);																// die Werte werden eingelesen
+			anzahl++;																				// Anzahl der Messwerte
 
-			anzahl++;																				//Anzahl der Messwerte
-			summe += wert;																			//Summe der Messwerte
+			cout << "#" << anzahl << "	" << wert << endl;
+			summe += wert;																			// Summe der Messwerte
 
 			if (wert > limit_oben) {																// oberer Grenzwert
 				anzahl_groesser++;
@@ -67,43 +76,72 @@ int main()
 			if (wert < limit_unten) {																// unterer Grenzwert
 				anzahl_kleiner++;
 			}
-			Sleep(1000);																			//Messwerte jede Sekunde
+			Sleep(1000);																			// Messwerte jede Sekunde
 
 		}
-		time_t time_end = time(0);																	//Ende der Messung
+		time(&endzeit);																				// Ende der Messung
 
 
-																									//Ausgabe nach der Messung:
-		cout << "Anfang: " << ctime(&time_start);													//Startzeit
-		cout << "Ende: " << ctime(&time_end);														//Endzeit
 
-		cout << "Anzahl der Messwerte: " << anzahl << endl;											//Anzahl
+		// ================== AUSGABE DER ZEIT ====================== //
+		cout << endl;
+		ctime_s(Start_Zeit_String, 26, &startzeit);													// Zeiten in Strings schreiben
+		ctime_s(End_Zeit_String, 26, &endzeit);
 
+		cout << left << setw(20) << "Anfang:";														// Startzeit
+		cout << Start_Zeit_String;
 
-		double mittelwert = summe / (double)anzahl;													//Mittelwerte
-		cout << "Mittelwert der Messwerte: " << mittelwert << endl;
-
-
-		anzahl_sollbereich = anzahl - anzahl_groesser - anzahl_kleiner;								//Anzahl Sollbereich
-		cout << "Anzahl der Messwerte im Sollbereich: " << anzahl_sollbereich << endl;
-		cout << "Anzahl der Messwerte größer oberer Grenzwert: " << anzahl_groesser << endl;
-		cout << "Anzahl der Messwerte kleiner unterer Grenzwert: " << anzahl_kleiner << endl;
+		cout << left << setw(20) << "Ende:";														// Endzeit
+		cout << End_Zeit_String << endl;
+		cout << endl;
 
 
-		double prozent_sollbereich = anzahl_sollbereich / (double)anzahl * 100;						//Prozentualer Anteil:
+		// ================== AUSGABE ANZAHL & MITTELWERT ============ //
+		cout << left << setw(50) << "Anzahl der Messwerte:";
+		cout << anzahl << endl;																		// Anzahl
+
+		double mittelwert = summe / (double)anzahl;													// Mittelwerte
+		cout << left << setw(50) << "Mittelwert der Messwerte:";
+		cout << fixed << setprecision(2) << mittelwert << endl << endl;
+		
+
+		// ================= AUSGABE SOLLBEREICH ABSOLUT ============ //
+		anzahl_sollbereich = anzahl - anzahl_groesser - anzahl_kleiner;								
+		cout << left << setw(50) << "Anzahl der Messwerte im Sollbereich:";
+		cout << anzahl_sollbereich << endl;
+		cout << left << setw(50) << "Anzahl der Messwerte größer oberer Grenzwert:";
+		cout << anzahl_groesser << endl;
+		cout << left << setw(50) << "Anzahl der Messwerte kleiner unterer Grenzwert:";
+		cout << anzahl_kleiner << endl << endl;
+
+
+		// ================= AUSGABE SOLLBEREICH RELATIV ============ //
+		double prozent_sollbereich = anzahl_sollbereich / (double)anzahl * 100;
 		double prozent_groesser = anzahl_groesser / (double)anzahl * 100;
 		double prozent_kleiner = anzahl_kleiner / (double)anzahl * 100;
 
-		cout << "Prozentualer Anteil im Sollbereich: " << (int)prozent_sollbereich << "%" << endl;
-		cout << "Prozentualer größer oberer Grenzwert: " << (int)prozent_groesser << "%" << endl;
-		cout << "Prozentualer kleiner unterer Grenzwert: " << (int)prozent_kleiner << "%" << endl;
+		cout << left << setw(50) << "Prozentualer Anteil im Sollbereich:";
+		cout << fixed << setprecision(2) << prozent_sollbereich << "%" << endl;
+		cout << left << setw(50) << "Prozentualer größer oberer Grenzwert:";
+		cout << fixed << setprecision(2) << prozent_groesser << "%" << endl;
+		cout << left << setw(50) << "Prozentualer kleiner unterer Grenzwert:";
+		cout << fixed << setprecision(2) << prozent_kleiner << "%" << endl << endl;
 
-		cout << "Enter drücken um eine neue Messung zu starten:";
-		int temp;
-		cin >> temp;
 
+		// ================ MESSUNG WIEDERHOLEN ? ===================== //
+		cout << "Enter drücken um eine neue Messung zu starten," << endl;
+		cout << "E drücken um das Programm zu beenden." << endl;
+		while (!_kbhit()) {
+			int taste = _getch();
+			cout << "Taste: " << taste << endl;
+			if (taste == 13) {
+				break;
+			}
+			if (taste == 101) {
+				return 0;
+			}
+			Sleep(10);
+		}
+		system("CLS");
 	}
-
-	system("Pause");
-	return 0;
 }
