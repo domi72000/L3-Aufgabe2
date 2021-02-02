@@ -41,7 +41,6 @@ int main()
 
 	while (true) {
 
-		cout << endl;
 		cout << "Messwertauswertung mit SimSTB" << endl;
 		cout << "----------------------------------------" << endl << endl;
 
@@ -54,11 +53,11 @@ int main()
 
 		cout << endl;
 
-		cout << "Warten bis DE0 = 1";
+		cout << "Warten bis DE0 = 1 ";
 		while (digEin(0) != 1) {																	// Bedingung für den Start
 			Sleep(10);
 		}
-		cout << " [OK]" << endl << endl;
+		cout << "[OK]" << endl << endl;
 		time(&startzeit);																			// Start der Messung
 		
 		while (digEin(0))
@@ -131,14 +130,14 @@ int main()
 		// ================ MESSUNG WIEDERHOLEN ? ===================== //
 		cout << "Enter drücken um eine neue Messung zu starten," << endl;
 		cout << "E drücken um das Programm zu beenden." << endl;
-		while (!_kbhit()) {
-			int taste = _getch();
-			cout << "Taste: " << taste << endl;
-			if (taste == 13) {
-				break;
+
+		while (true) {																				// Endlosschleife
+			int taste = _getch();																	// Taste einlesen
+			if (taste == 13) {																		// Taste Enter
+				break;																				// While Schleife verlassen
 			}
-			if (taste == 101) {
-				return 0;
+			if (taste == 101 || taste == 69) {														// Taste e oder E
+				return 0;																			// main Funktion verlassen
 			}
 			Sleep(10);
 		}
